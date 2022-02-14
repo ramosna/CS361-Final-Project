@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <title>Currency Convert</title>
+</head>
+<body>
+    <!--Header-->
+    <header role="navigation">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1">Currency Convert</span>
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="main.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="help.html">Help</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!--main conversion input form-->
+    <div class="container-sm mt-5">
+        <div class="row justify-content-center">
+            <div class="col mx-auto">
+                <label for="amount1">Amount</label>
+                <input class="form-control" type="number" name="amount1" id="amount1" value="1" required>
+            </div>
+            <div class="col mx-auto">
+                <label for="currency1">Currency</label>
+                <select class="form-control" name="currency1" id="currency1" required>
+                    <option value="usd">US Dollar</option>
+                    <option value="cd">Canadian Dollar</option>
+                    <option value="euro">Euro</option>
+                    <option value="gbp">British Pound</option>
+                    <option value="yen">Japanese Yen</option>
+                </select>
+            </div>
+            <div class="col text-center mt-4 mx-auto">
+                <h5>Convert To</h5>
+            </div>
+            <div class="col mx-auto">
+                <label for="currency2">Currency</label>
+                <select class="form-control" name="currency2" id="currency2" required>
+                    <option value="usd">US Dollar</option>
+                    <option value="cd">Canadian Dollar</option>
+                    <option value="euro">Euro</option>
+                    <option value="gbp">British Pound</option>
+                    <option value="yen">Japanese Yen</option>
+                </select>
+            </div>
+            <div class="col mt-4 text-center">
+                <button type="submit" class="btn btn-success" id="convert">Convert</button>
+                </div>
+        </div>
+    </div>
+
+    <!--Displaying conversion data and google share data-->
+    <div class="container-sm mt-4" id="conversion" style="display: none;">
+        <div class="card border-dark mt-3">
+        <div class="card-body">
+            <div class="card border-dark mt-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col text-center">
+                            <h6>500 USD</h6>
+                        </div>
+                        <div class="col text-center">
+                            <h6>=</h6>
+                        </div>
+                        <div class="col text-center">
+                            <h6>368.66 GBP</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card border-dark mt-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col text-center">
+                            <h6>With 368.66 GBP You Could Purchase</h6>
+                        </div>
+                        <div class="col text-center">
+                            <h6>-></h6>
+                        </div>
+                        <div class="col text-center">
+                            <h6>0.186 Google Shares</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!--Board for pinned exchanges-->
+    <div class="container-sm mt-4" id="pinBoard" style="display: none;">
+        <div class="card border-dark mt-3">
+        <div class="card-body">
+            <h4 class="card-title">Pinned Currency Rates</h4>
+            <div class="card border-dark mt-3">
+                <div class="row mt-2 mb-3">
+                    <div class="col text-center mt-4 mx-auto">
+                        <h5>$ USD to € Euro</h5>
+                    </div>
+                    <div class="col text-center mt-4 mx-auto">
+                        <h5>=</h5>
+                    </div>
+                    <div class="col text-center mt-4 mx-auto">
+                        <h5>Exchange Rate: 0.88</h5>
+                    </div>
+                    <div class="col mt-4 text-center mx-auto">
+                        <button type="submit" class="btn btn-danger" id="remove">Remove</button>
+                    </div>
+                </div>
+            </div>  
+            </div>
+        </div>
+        </div>
+    </div>
+    <!--Button for brining up pinned exchanged option -->
+    <div class="container-sm mt-5 mb-5" id="pinButton">
+        <div class="row">
+            <div class="col mt-4 text-center">
+                <button type="submit" class="btn btn-success">Pin Currency Exchange Rate</button>
+                </div>
+        </div>
+    </div>
+    <!--adding a new pinned exchnage-->
+    <div class="container-sm mt-5" id="pinEnter" style="display: none;">
+        <div class="card border-dark mt-3">
+        <div class="card-body">
+            <h4 class="card-title">Pin Currency Exchange Rate</h4>
+            <div class="card border-dark mt-3">
+                <div class="row mt-2 mb-3">
+                <div class="col mx-auto">
+                    <label for="currency1">Currency</label>
+                    <select class="form-control" name="currency1" id="currency1" required>
+                        <option value="usd">US Dollar</option>
+                        <option value="cd">Canadian Dollar</option>
+                        <option value="euro">Euro</option>
+                        <option value="gbp">British Pound</option>
+                        <option value="yen">Japanese Yen</option>
+                    </select>
+                </div>
+                <div class="col text-center mt-4 mx-auto">
+                    <h5>Convert To</h5>
+                </div>
+                <div class="col mx-auto">
+                    <label for="currency2">Currency</label>
+                    <select class="form-control" name="currency2" id="currency2" required>
+                        <option value="usd">US Dollar</option>
+                        <option value="cd">Canadian Dollar</option>
+                        <option value="euro">Euro</option>
+                        <option value="gbp">British Pound</option>
+                        <option value="yen">Japanese Yen</option>
+                    </select>
+                </div>
+                <div class="col mt-4 col-auto text-right">
+                    <button type="submit" class="btn btn-success" id="add">Add</button>
+                </div>
+                <div class="col mt-4 col-auto text-left">
+                    <button type="submit" class="btn btn-secondary" id="cancel">Cancel</button>
+                </div>
+                
+            </div>
+            <span class="container-fluid text-left">
+                Pin a currency exchange rate you always wish to see
+            </span>
+            </div>
+            
+        </div>
+        
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
