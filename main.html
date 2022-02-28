@@ -34,11 +34,11 @@
             <div class="col mx-auto">
                 <label for="currency1">Currency</label>
                 <select class="form-control" name="currency1" id="currency1" required>
-                    <option value="usd">US Dollar</option>
-                    <option value="cd">Canadian Dollar</option>
-                    <option value="euro">Euro</option>
-                    <option value="gbp">British Pound</option>
-                    <option value="yen">Japanese Yen</option>
+                    <option value="USD">US Dollar</option>
+                    <option value="CAD">Canadian Dollar</option>
+                    <option value="EUR">Euro</option>
+                    <option value="GBP">British Pound</option>
+                    <option value="JPY">Japanese Yen</option>
                 </select>
             </div>
             <div class="col text-center mt-4 mx-auto">
@@ -47,11 +47,11 @@
             <div class="col mx-auto">
                 <label for="currency2">Currency</label>
                 <select class="form-control" name="currency2" id="currency2" required>
-                    <option value="usd">US Dollar</option>
-                    <option value="cd">Canadian Dollar</option>
-                    <option value="euro">Euro</option>
-                    <option value="gbp">British Pound</option>
-                    <option value="yen">Japanese Yen</option>
+                    <option value="USD">US Dollar</option>
+                    <option value="CAD">Canadian Dollar</option>
+                    <option value="EUR">Euro</option>
+                    <option value="GBP">British Pound</option>
+                    <option value="JPY">Japanese Yen</option>
                 </select>
             </div>
             <div class="col mt-4 text-center">
@@ -68,13 +68,13 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col text-center">
-                            <h6>500 USD</h6>
+                            <h6 id="begamount"></h6>
                         </div>
                         <div class="col text-center">
                             <h6>=</h6>
                         </div>
-                        <div class="col text-center">
-                            <h6>368.66 GBP</h6>
+                        <div class="col text-center" >
+                            <h6 id="endamount"></h6>
                         </div>
                     </div>
                 </div>
@@ -83,13 +83,13 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col text-center">
-                            <h6>With 368.66 GBP You Could Purchase</h6>
+                            <h6 id="shares1">With 368.66 GBP You Could Purchase</h6>
                         </div>
                         <div class="col text-center">
                             <h6>-></h6>
                         </div>
                         <div class="col text-center">
-                            <h6>0.186 Google Shares</h6>
+                            <h6 id="shares2">0.186 Google Shares</h6>
                         </div>
                     </div>
                 </div>
@@ -101,24 +101,9 @@
     <!--Board for pinned exchanges-->
     <div class="container-sm mt-4" id="pinBoard" style="display: none;">
         <div class="card border-dark mt-3">
-        <div class="card-body">
+        <div class="card-body" id="pinHere">
             <h4 class="card-title">Pinned Currency Rates</h4>
-            <div class="card border-dark mt-3">
-                <div class="row mt-2 mb-3">
-                    <div class="col text-center mt-4 mx-auto">
-                        <h5>$ USD to € Euro</h5>
-                    </div>
-                    <div class="col text-center mt-4 mx-auto">
-                        <h5>=</h5>
-                    </div>
-                    <div class="col text-center mt-4 mx-auto">
-                        <h5>Exchange Rate: 0.88</h5>
-                    </div>
-                    <div class="col mt-4 text-center mx-auto">
-                        <button type="submit" class="btn btn-danger" id="remove">Remove</button>
-                    </div>
-                </div>
-            </div>  
+        
             </div>
         </div>
         </div>
@@ -140,12 +125,12 @@
                 <div class="row mt-2 mb-3">
                 <div class="col mx-auto">
                     <label for="currency1">Currency</label>
-                    <select class="form-control" name="currency1" id="currency1" required>
-                        <option value="usd">US Dollar</option>
-                        <option value="cd">Canadian Dollar</option>
-                        <option value="euro">Euro</option>
-                        <option value="gbp">British Pound</option>
-                        <option value="yen">Japanese Yen</option>
+                    <select class="form-control" name="curr1" id="curr1" required>
+                        <option value="USD">US Dollar</option>
+                        <option value="CAD">Canadian Dollar</option>
+                        <option value="EUR">Euro</option>
+                        <option value="GBP">British Pound</option>
+                        <option value="JPY">Japanese Yen</option>
                     </select>
                 </div>
                 <div class="col text-center mt-4 mx-auto">
@@ -153,12 +138,12 @@
                 </div>
                 <div class="col mx-auto">
                     <label for="currency2">Currency</label>
-                    <select class="form-control" name="currency2" id="currency2" required>
-                        <option value="usd">US Dollar</option>
-                        <option value="cd">Canadian Dollar</option>
-                        <option value="euro">Euro</option>
-                        <option value="gbp">British Pound</option>
-                        <option value="yen">Japanese Yen</option>
+                    <select class="form-control" name="curr2" id="curr2" required>
+                        <option value="USD">US Dollar</option>
+                        <option value="CAD">Canadian Dollar</option>
+                        <option value="EUR">Euro</option>
+                        <option value="GBP">British Pound</option>
+                        <option value="JPY">Japanese Yen</option>
                     </select>
                 </div>
                 <div class="col mt-4 col-auto text-right">
@@ -179,6 +164,15 @@
         </div>
     </div>
 
+<!-- 
+    <div class="container-sm mt-5 mb-5" id="testing">
+        <div class="row">
+            <div class="col mt-4 text-center">
+                <button type="submit" class="btn btn-success">Test</button>
+                </div>
+        </div>
+    </div>
+-->
     <script src="script.js"></script>
 </body>
 </html>
