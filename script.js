@@ -3,17 +3,6 @@ let pinned = 0;
 
 const symbols = {'USD': '$', 'GBP': '£', 'EUR': '€', 'CAD': '$', 'JPY': '¥'}
 
-/*
-document.getElementById("testing").addEventListener("click", testFun);
-function testFun(){
-    fetch("http://localhost:8487/convert?currency=CAD&amount=500")
-    .then(data => data.json())
-        .then(data => {
-            console.log(data)
-        })
-}
-*/
-
 // event listeners for the buttons
 document.getElementById("convert").addEventListener("click", displayConversion);
 document.getElementById("pinButton").addEventListener("click", displayPinEnter);

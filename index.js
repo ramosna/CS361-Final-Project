@@ -16,6 +16,7 @@ app.use(CORS());
 
 
 // https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9
+// used for cors
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
@@ -27,7 +28,6 @@ function apiCall() {
         .then(res => {
             // handle success
             const response = res.data.data
-            // console.log(data)
             return response;
         })
         .catch(error => {
@@ -49,7 +49,7 @@ function microCall(dollar) {
 })
 }
 
-// post requests to handle new additions to database
+// route for handling standard currency conversion
 app.post('/standard',(req,res,next) => {
   const one = req.body["one"]
   const two = req.body["two"]
@@ -57,8 +57,6 @@ app.post('/standard',(req,res,next) => {
   const total = {one: one, two: two, amount: amount}
   apiCall()
   .then(response => {
-    // console.log(response)
-   
     let rate1 = response[one]
     let rate2 = response[two]
     if (rate1 == null){
@@ -67,9 +65,6 @@ app.post('/standard',(req,res,next) => {
     if (rate2 == null){
       rate2 = 1
     }
-    console.log(rate1)
-    console.log(rate2)
-    console.log(amount)
     let conversion = ((amount / rate1) * rate2)
     if (conversion < .01) {
       conversion = conversion.toFixed(4)
@@ -82,7 +77,6 @@ app.post('/standard',(req,res,next) => {
       .then(response => {
         total.shares = response
         total.conv = conversion
-        console.log(total)
         try {res.json(total)}
         catch {console.log("error")}
       })
@@ -95,15 +89,13 @@ app.post('/standard',(req,res,next) => {
   })
   });
 
-// post request handling pinned exchanges
+// route for handling pinned exchanges
 app.post('/rate',(req,res,next) => {
   const one = req.body["one"]
   const two = req.body["two"]
   const total = {}
   apiCall()
   .then(response => {
-    // console.log(response)
-     
     let rate1 = response[one]
     let rate2 = response[two]
     if (rate1 == null){
@@ -112,9 +104,6 @@ app.post('/rate',(req,res,next) => {
     if (rate2 == null){
       rate2 = 1
     }
-    //console.log(rate1)
-    //console.log(rate2)
-    //console.log(amount)
     let conversion = rate2 / rate1
     if (conversion < 0.01) {
       conversion = conversion.toFixed(4)
