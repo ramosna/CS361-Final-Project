@@ -22,7 +22,6 @@ app.use((req, res, next) => {
     next();
   });
 
-
 function apiCall() {
   return axios.get('https://freecurrencyapi.net/api/v2/latest?apikey=c57339d0-9018-11ec-ab39-910d5ad288fe')
         .then(res => {
@@ -49,6 +48,23 @@ function microCall(dollar) {
 })
 }
 
+function checkNull(value) {
+  if (value == null){
+    value = 1
+  }
+  return value
+}
+
+function roundConv(value) {
+  if (value < .01) {
+    value = value.toFixed(4)
+  }
+  else {
+    value = value.toFixed(2)
+  }
+  return value
+}
+
 // route for handling standard currency conversion
 app.post('/standard',(req,res,next) => {
   const one = req.body["one"]
@@ -57,37 +73,21 @@ app.post('/standard',(req,res,next) => {
   const total = {one: one, two: two, amount: amount}
   apiCall()
   .then(response => {
-    let rate1 = response[one]
-    let rate2 = response[two]
-    if (rate1 == null){
-      rate1 = 1
-    }
-    if (rate2 == null){
-      rate2 = 1
-    }
-    let conversion = ((amount / rate1) * rate2)
-    if (conversion < .01) {
-      conversion = conversion.toFixed(4)
-    }
-    else {
-      conversion = conversion.toFixed(2)
-    }
+    let rate1 = checkNull(response[one])
+    let rate2 = checkNull(response[two])
+    let conversion = roundConv(((amount / rate1) * rate2))
     const amountGoogle = (amount * rate1).toFixed()
-    microCall(amountGoogle)
+    microCall((amount * rate1).toFixed())
       .then(response => {
         total.shares = response
         total.conv = conversion
-        try {res.json(total)}
-        catch {console.log("error")}
+        res.json(total)
       })
-    
-    
+      .catch(error => {console.log(error)})
   })
-  .catch(error => {
-    // handle error
-    console.log(error);
-  })
-  });
+  .catch(error => {console.log(error)})
+});
+
 
 // route for handling pinned exchanges
 app.post('/rate',(req,res,next) => {
@@ -96,30 +96,13 @@ app.post('/rate',(req,res,next) => {
   const total = {}
   apiCall()
   .then(response => {
-    let rate1 = response[one]
-    let rate2 = response[two]
-    if (rate1 == null){
-      rate1 = 1
-    }
-    if (rate2 == null){
-      rate2 = 1
-    }
-    let conversion = rate2 / rate1
-    if (conversion < 0.01) {
-      conversion = conversion.toFixed(4)
-    }
-    else {
-      conversion = conversion.toFixed(2)
-    }
+    let rate1 = checkNull(response[one])
+    let rate2 = checkNull(response[two])
+    let conversion = roundConv(rate2 / rate1)
     total.conv = conversion
-    try {res.json(total)}
-    catch {console.log("error")}
-      
+    res.json(total)
   })
-  .catch(error => {
-    // handle error
-    console.log(error);
-  })
+  .catch(error => {console.log(error)})
   });
 
 app.get('/convert', (req, res, next) => {
@@ -130,9 +113,9 @@ app.get('/convert', (req, res, next) => {
       const rate = response[currency]
       const conv = rate * amount;
       const result = {conversion: conv}
-      try {res.json(result)}
-      catch {console.log("error")}
+      res.json(result)
     })
+    .catch(error => {console.log(error)})
 })
 
 // 400 error handler

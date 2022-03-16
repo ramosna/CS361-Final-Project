@@ -10,33 +10,48 @@ document.getElementById("add").addEventListener("click", pinExchange);
 document.getElementById("cancel").addEventListener("click", cancelPin);
 document.getElementById("pinHere").addEventListener("click", (event) => {
     if (event.target.name == "remove"){
-        let result = confirm("Are you sure you want to remove this pinned currency conversion?")
-            if (result == true){
-            let parent = event.target.parentElement;
-            parent = parent.parentElement
-            const children = parent.children
-            for (let i = 0; i < children.length; i++){
-                let child = children[i]
-                child.removeChild(child.firstElementChild)
-            }
-            for (let i = 0; i < children.length; i++){
-                let child = children[i]
-                parent.removeChild(child)
-            }
-        
-            parent = parent.parentElement
-            parent.removeChild(parent.firstElementChild)
-            const last = parent
-            parent = parent.parentElement
-            parent.removeChild(last)
-            pinned -= 1
-            if (pinned == 0) {
-                document.getElementById("pinBoard").style.display = "none";
-            }
-        }
+        deleteConfirm(event)
     }
 })
+// SECTION 1: functions that delete a pinned exchange
+function deleteConfirm(event){
+    let result = confirm("Are you sure you want to remove this pinned currency conversion?")
+    if (result == true){
+        let parent = event.target.parentElement;
+        parent = parent.parentElement
+        const children = parent.children
+        removeChildChildren(children)
+        removeParentChildren(parent, children)
+        removeCard(parent)
+    }
+}
 
+function removeChildChildren(children){
+    for (let i = 0; i < children.length; i++){
+        let child = children[i]
+        child.removeChild(child.firstElementChild)
+    }
+}
+function removeParentChildren(parent, children){
+    for (let i = 0; i < children.length; i++){
+        let child = children[i]
+        parent.removeChild(child)
+    }
+}
+
+function removeCard(parent){
+    parent = parent.parentElement
+        parent.removeChild(parent.firstElementChild)
+        const last = parent
+        parent = parent.parentElement
+        parent.removeChild(last)
+        pinned -= 1
+        if (pinned == 0) {
+            document.getElementById("pinBoard").style.display = "none";
+        }
+}
+
+// SECTION 2: functions that call currency API
 function callApi(currency1, currency2, num){
     fetch("http://localhost:8487/standard/", {
         method: 'POST',
@@ -51,87 +66,38 @@ function callApi(currency1, currency2, num){
     })
         .then(data => data.json())
         .then(data => {
-            console.log(data)
-            let amount = data.amount;
-            amount += ' '
-            amount += data.one
-            console.log(amount)
-            document.getElementById("begamount").innerHTML = amount;
-
-            let end = data.conv
-            end += ' '
-            end += data.two
-            document.getElementById("endamount").innerHTML = end;
-            document.getElementById("shares1").innerHTML = `With ${data.conv} ${data.two} You Could Purchase`;
-            const shareGoogle = data.shares.quantity;
-            if (shareGoogle == '1'){
-                document.getElementById("shares2").innerHTML = `1 Google Share`;
-            }
-            else {
-                document.getElementById("shares2").innerHTML = `${shareGoogle} Google Shares`;
-            }
-
-
-            document.getElementById("conversion").style.display = "block";
+            dataString(data)
         })
 }
 
-function buildPin(dict, curr1, curr2, rate) {
-    const parent = document.getElementById("pinHere")
-    // adding card
-    const card = document.createElement("div")
-    card.classList.add('card')
-    card.classList.add('border-dark')
-    card.classList.add('mt-2')
-    card.classList.add('mb-2')
-    // adding row
-    const row = document.createElement("div")
-    row.classList.add('row')
-    row.classList.add('mt-2')
-    row.classList.add('mb-3')
-    function createCol() {
-        const col = document.createElement("div")
-        col.classList.add('col')
-        col.classList.add('text-center')
-        col.classList.add('mt-4')
-        col.classList.add('mx-auto')
-        return col
-    }
-    const col1 = createCol()
-    const col2 = createCol()
-    const col3 = createCol()
-    const col4 = createCol()
+function dataString(data){
+    console.log(data)
+    let amount = data.amount;
+    amount += ' '
+    amount += data.one
+    console.log(amount)
+    document.getElementById("begamount").innerHTML = amount;
 
-
-    const display1 = document.createElement("h5")
-    display1.innerHTML = `${dict[curr1]} ${curr1} to ${dict[curr2]} ${curr2}`
-    col1.append(display1)
-
-    const display2 = document.createElement("h5")
-    display2.innerHTML = '='
-    col2.append(display2)
-
-    const display3 = document.createElement("h5")
-    display3.innerHTML = `Exchange Rate: ${rate}`
-    col3.append(display3)
-
-    const button = document.createElement("button")
-    button.type = "submit"
-    button.classList.add("btn")
-    button.classList.add("btn-danger")
-    button.name = "remove"
-    button.innerHTML = 'Remove'
-    col4.append(button)
-
-    row.append(col1)
-    row.append(col2)
-    row.append(col3)
-    row.append(col4)
-
-    card.append(row)
-
-    parent.append(card)
+    let end = data.conv
+    end += ' '
+    end += data.two
+    document.getElementById("endamount").innerHTML = end;
+    document.getElementById("shares1").innerHTML = `With ${data.conv} ${data.two} You Could Purchase`;
+    googleString(data.shares.quantity);
+    
+    document.getElementById("conversion").style.display = "block";
 }
+
+function googleString(shareGoogle){
+    if (shareGoogle == '1'){
+        document.getElementById("shares2").innerHTML = `1 Google Share`;
+    }
+    else {
+        document.getElementById("shares2").innerHTML = `${shareGoogle} Google Shares`;
+    }
+}
+
+// SECTION 3: functions for building pinned exchange
 
 function getRate(curr1, curr2, dict) {
     fetch("http://localhost:8487/rate", {
@@ -151,9 +117,77 @@ function getRate(curr1, curr2, dict) {
         })
 }
 
-function removePin(event) {
-    console.log(even.target.name)
+function buildPin(dict, curr1, curr2, rate) {
+    const parent = document.getElementById("pinHere")
+    // creating each element to display pin
+    const card = createCard()
+    const row = createRow()
+    const col1 = createCol()
+    const col2 = createCol()
+    const col3 = createCol()
+    const col4 = createCol()
+    const button = createButton()
+
+    // appending text to each section
+    const display1 = document.createElement("h5")
+    display1.innerHTML = `${dict[curr1]} ${curr1} to ${dict[curr2]} ${curr2}`
+    col1.append(display1)
+
+    const display2 = document.createElement("h5")
+    display2.innerHTML = '='
+    col2.append(display2)
+
+    const display3 = document.createElement("h5")
+    display3.innerHTML = `Exchange Rate: ${rate}`
+    col3.append(display3)
+
+    // appending each element to the parent element
+    col4.append(button)
+    row.append(col1)
+    row.append(col2)
+    row.append(col3)
+    row.append(col4)
+    card.append(row)
+    parent.append(card)
 }
+
+function createCard() {
+    const card = document.createElement("div")
+    card.classList.add('card')
+    card.classList.add('border-dark')
+    card.classList.add('mt-2')
+    card.classList.add('mb-2')
+    return card
+}
+
+function createRow() {
+    const row = document.createElement("div")
+    row.classList.add('row')
+    row.classList.add('mt-2')
+    row.classList.add('mb-3')
+    return row
+}
+
+function createCol() {
+    const col = document.createElement("div")
+    col.classList.add('col')
+    col.classList.add('text-center')
+    col.classList.add('mt-4')
+    col.classList.add('mx-auto')
+    return col
+}
+
+function createButton(){
+    const button = document.createElement("button")
+    button.type = "submit"
+    button.classList.add("btn")
+    button.classList.add("btn-danger")
+    button.name = "remove"
+    button.innerHTML = 'Remove'
+    return button
+}
+
+// SECTION 4: functions that hide or display html elements
 
 // function to display conversion data
 function displayConversion(){
