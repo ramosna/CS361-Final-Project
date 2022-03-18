@@ -1,6 +1,9 @@
+// This file contains my microservice used in Michael Morriss' project
+
 // setting the port number
 const port = 8488;
 
+// required dependencies
 const express = require('express');
 const app = express();
 var CORS = require('cors');
@@ -15,7 +18,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(CORS());
 
 
-// https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9
+// Idea from https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9
 // used for cors 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -26,21 +29,17 @@ app.use((req, res, next) => {
 function apiCall() {
     return axios.get('https://freecurrencyapi.net/api/v2/latest?apikey=c57339d0-9018-11ec-ab39-910d5ad288fe')
         .then(res => {
-            // handle success
             const response = res.data.data
-            // console.log(data)
             return response;
         })
-        .catch(error => {
-            // handle error
-            console.log(error);
-        })
+        .catch(error => {console.log(error)})
 }
 
 // get route in order to get the currency conversion
 app.get('/convert', (req, res, next) => {
     const currency = req.query["currency"]
     const amount = req.query["amount"]
+    // Currency API call
     apiCall()
       .then(response => {
         const rate = response[currency]

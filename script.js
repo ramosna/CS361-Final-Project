@@ -1,6 +1,7 @@
-
+// variable to keep track of how many pinned exchanges there are
 let pinned = 0;
 
+// ticker symbols for currencies
 const symbols = {'USD': '$', 'GBP': '£', 'EUR': '€', 'CAD': '$', 'JPY': '¥'}
 
 // event listeners for the buttons
@@ -13,7 +14,10 @@ document.getElementById("pinHere").addEventListener("click", (event) => {
         deleteConfirm(event)
     }
 })
+
 // SECTION 1: functions that delete a pinned exchange
+
+// function for deleting a pinned exchange
 function deleteConfirm(event){
     let result = confirm("Are you sure you want to remove this pinned currency conversion?")
     if (result == true){
@@ -26,12 +30,15 @@ function deleteConfirm(event){
     }
 }
 
+// function to remove all child elements of children
 function removeChildChildren(children){
     for (let i = 0; i < children.length; i++){
         let child = children[i]
         child.removeChild(child.firstElementChild)
     }
 }
+
+// function to remove all child elements of parent
 function removeParentChildren(parent, children){
     for (let i = 0; i < children.length; i++){
         let child = children[i]
@@ -39,6 +46,7 @@ function removeParentChildren(parent, children){
     }
 }
 
+// function to remove the last two elements making up the card
 function removeCard(parent){
     parent = parent.parentElement
         parent.removeChild(parent.firstElementChild)
@@ -52,7 +60,10 @@ function removeCard(parent){
 }
 
 // SECTION 2: functions that call currency API
+
+// function used to get standard currency conversion and google shares
 function callApi(currency1, currency2, num){
+    // fetching backend api
     fetch("http://localhost:8487/standard/", {
         method: 'POST',
         headers: {
@@ -70,12 +81,11 @@ function callApi(currency1, currency2, num){
         })
 }
 
+// function used take conversion data and display it on web page
 function dataString(data){
-    console.log(data)
     let amount = data.amount;
     amount += ' '
     amount += data.one
-    console.log(amount)
     document.getElementById("begamount").innerHTML = amount;
 
     let end = data.conv
@@ -88,6 +98,7 @@ function dataString(data){
     document.getElementById("conversion").style.display = "block";
 }
 
+// function taking google share data and displaying it to web page
 function googleString(shareGoogle){
     if (shareGoogle == '1'){
         document.getElementById("shares2").innerHTML = `1 Google Share`;
@@ -99,6 +110,7 @@ function googleString(shareGoogle){
 
 // SECTION 3: functions for building pinned exchange
 
+// function used to make api call for pinned exchange
 function getRate(curr1, curr2, dict) {
     fetch("http://localhost:8487/rate", {
         method: 'POST',
@@ -112,11 +124,11 @@ function getRate(curr1, curr2, dict) {
     })
         .then(data => data.json())
         .then(data => {
-            console.log(data)
             buildPin(dict, curr1, curr2, data.conv)
         })
 }
 
+// function to build html elements in order to display pin
 function buildPin(dict, curr1, curr2, rate) {
     const parent = document.getElementById("pinHere")
     // creating each element to display pin
@@ -151,6 +163,7 @@ function buildPin(dict, curr1, curr2, rate) {
     parent.append(card)
 }
 
+// function used to create html element card
 function createCard() {
     const card = document.createElement("div")
     card.classList.add('card')
@@ -160,6 +173,7 @@ function createCard() {
     return card
 }
 
+// function used to create html element row
 function createRow() {
     const row = document.createElement("div")
     row.classList.add('row')
@@ -168,6 +182,7 @@ function createRow() {
     return row
 }
 
+// function used to create html element column
 function createCol() {
     const col = document.createElement("div")
     col.classList.add('col')
@@ -177,6 +192,7 @@ function createCol() {
     return col
 }
 
+// function used to create html element remove button
 function createButton(){
     const button = document.createElement("button")
     button.type = "submit"
